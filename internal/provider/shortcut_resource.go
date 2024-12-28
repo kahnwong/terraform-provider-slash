@@ -112,48 +112,37 @@ func (r *shortcutResource) Create(ctx context.Context, req resource.CreateReques
 	}
 }
 
-// Read resource information.
 func (r *shortcutResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	//// Get current state
-	//var state shortcutResourceModel
-	//diags := req.State.Get(ctx, &state)
-	//resp.Diagnostics.Append(diags...)
-	//if resp.Diagnostics.HasError() {
-	//	return
-	//}
-	//
-	//// Get refreshed order value from HashiCups
-	//order, err := r.client.GetOrder(state.ID.ValueString())
-	//if err != nil {
-	//	resp.Diagnostics.AddError(
-	//		"Error Reading HashiCups Order",
-	//		"Could not read HashiCups order ID "+state.ID.ValueString()+": "+err.Error(),
-	//	)
-	//	return
-	//}
-	//
-	//// Overwrite items with refreshed state
-	//state.Items = []orderItemModel{}
-	//for _, item := range order.Items {
-	//	state.Items = append(state.Items, orderItemModel{
-	//		Coffee: orderItemCoffeeModel{
-	//			ID:          types.Int64Value(int64(item.Coffee.ID)),
-	//			Name:        types.StringValue(item.Coffee.Name),
-	//			Teaser:      types.StringValue(item.Coffee.Teaser),
-	//			Description: types.StringValue(item.Coffee.Description),
-	//			Price:       types.Float64Value(item.Coffee.Price),
-	//			Image:       types.StringValue(item.Coffee.Image),
-	//		},
-	//		Quantity: types.Int64Value(int64(item.Quantity)),
-	//	})
-	//}
-	//
-	//// Set refreshed state
-	//diags = resp.State.Set(ctx, &state)
-	//resp.Diagnostics.Append(diags...)
-	//if resp.Diagnostics.HasError() {
-	//	return
-	//}
+	// Get current state
+	var state shortcutResourceModel
+	diags := req.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Get refreshed shortcut value from Slash
+	sr, err := r.client.GetShortcut(state.ID.ValueString())
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Reading Slash Shortcut",
+			"Could not read Slash shortcut ID "+state.ID.ValueString()+": "+err.Error(),
+		)
+		return
+	}
+
+	// Overwrite items with refreshed state
+	state.ID = types.StringValue(strconv.Itoa(sr.ID))
+	state.Name = types.StringValue(sr.Name)
+	state.Link = types.StringValue(sr.Link)
+	state.Title = types.StringValue(sr.Title)
+
+	// Set refreshed state
+	diags = resp.State.Set(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 }
 
 func (r *shortcutResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
@@ -186,9 +175,9 @@ func (r *shortcutResource) Update(ctx context.Context, req resource.UpdateReques
 	//	return
 	//}
 	//
-	//// Fetch updated items from GetOrder as UpdateOrder items are not
+	//// Fetch updated items from GetShortcut as UpdateOrder items are not
 	//// populated.
-	//order, err := r.client.GetOrder(plan.ID.ValueString())
+	//order, err := r.client.GetShortcut(plan.ID.ValueString())
 	//if err != nil {
 	//	resp.Diagnostics.AddError(
 	//		"Error Reading HashiCups Order",

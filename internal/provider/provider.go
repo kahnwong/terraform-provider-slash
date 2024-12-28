@@ -2,8 +2,10 @@ package provider
 
 import (
 	"context"
-	"github.com/kahnwong/terraform-provider-slash/slash"
 	"os"
+
+	"github.com/kahnwong/terraform-provider-slash/slash"
+
 	//"github.com/hashicorp-demoapp/hashicups-client-go"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/function"

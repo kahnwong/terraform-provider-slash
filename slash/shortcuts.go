@@ -7,26 +7,25 @@ import (
 	"strings"
 )
 
-//// GetOrder - Returns a specifc order
-//func (c *Client) GetOrder(orderID string) (*Order, error) {
-//	req, err := http.NewRequest("GET", fmt.Sprintf("%s/orders/%s", c.HostURL, orderID), nil)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	body, err := c.doRequest(req)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	order := Order{}
-//	err = json.Unmarshal(body, &order)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	return &order, nil
-//}
+func (c *Client) GetShortcut(shortcutID string) (*Shortcut, error) {
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v1/shortcuts/%s", c.HostURL, shortcutID), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := c.doRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	sr := Shortcut{}
+	err = json.Unmarshal(body, &sr)
+	if err != nil {
+		return nil, err
+	}
+
+	return &sr, nil
+}
 
 func (c *Client) CreateShortcut(shortcut Shortcut) (*Shortcut, error) {
 	rb, err := json.Marshal(shortcut)
