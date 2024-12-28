@@ -2,6 +2,7 @@ package slash
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"strings"
@@ -77,21 +78,20 @@ func (c *Client) UpdateShortcut(shortcutID string, shortcut Shortcut) (*Shortcut
 	return &sr, nil
 }
 
-//// DeleteOrder - Deletes an order
-//func (c *Client) DeleteOrder(orderID string) error {
-//	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/orders/%s", c.HostURL, orderID), nil)
-//	if err != nil {
-//		return err
-//	}
-//
-//	body, err := c.doRequest(req)
-//	if err != nil {
-//		return err
-//	}
-//
-//	if string(body) != "Deleted order" {
-//		return errors.New(string(body))
-//	}
-//
-//	return nil
-//}
+func (c *Client) DeleteShortcut(shortcutID string) error {
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/api/v1/shortcuts/%s", c.HostURL, shortcutID), nil)
+	if err != nil {
+		return err
+	}
+
+	body, err := c.doRequest(req)
+	if err != nil {
+		return err
+	}
+
+	if string(body) != "{}" {
+		return errors.New(string(body))
+	}
+
+	return nil
+}

@@ -192,23 +192,23 @@ func (r *shortcutResource) Update(ctx context.Context, req resource.UpdateReques
 }
 
 func (r *shortcutResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	//// Retrieve values from state
-	//var state shortcutResourceModel
-	//diags := req.State.Get(ctx, &state)
-	//resp.Diagnostics.Append(diags...)
-	//if resp.Diagnostics.HasError() {
-	//	return
-	//}
-	//
-	//// Delete existing order
-	//err := r.client.DeleteOrder(state.ID.ValueString())
-	//if err != nil {
-	//	resp.Diagnostics.AddError(
-	//		"Error Deleting HashiCups Order",
-	//		"Could not delete order, unexpected error: "+err.Error(),
-	//	)
-	//	return
-	//}
+	// Retrieve values from state
+	var state shortcutResourceModel
+	diags := req.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Delete existing shortcut
+	err := r.client.DeleteShortcut(state.ID.ValueString())
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Deleting Slash Shortcut",
+			"Could not delete shortcut, unexpected error: "+err.Error(),
+		)
+		return
+	}
 }
 
 func (r *shortcutResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
