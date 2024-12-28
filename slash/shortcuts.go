@@ -52,32 +52,31 @@ func (c *Client) CreateShortcut(shortcut Shortcut) (*Shortcut, error) {
 	return &sr, nil
 }
 
-//// UpdateOrder - Updates an order
-//func (c *Client) UpdateOrder(orderID string, orderItems []OrderItem) (*Order, error) {
-//	rb, err := json.Marshal(orderItems)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	req, err := http.NewRequest("PUT", fmt.Sprintf("%s/orders/%s", c.HostURL, orderID), strings.NewReader(string(rb)))
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	body, err := c.doRequest(req)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	order := Order{}
-//	err = json.Unmarshal(body, &order)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	return &order, nil
-//}
-//
+func (c *Client) UpdateShortcut(shortcutID string, shortcut Shortcut) (*Shortcut, error) {
+	rb, err := json.Marshal(shortcut)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", fmt.Sprintf("%s/api/v1/shortcuts/%s?updateMask=name,link,title", c.HostURL, shortcutID), strings.NewReader(string(rb)))
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := c.doRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	sr := Shortcut{}
+	err = json.Unmarshal(body, &sr)
+	if err != nil {
+		return nil, err
+	}
+
+	return &sr, nil
+}
+
 //// DeleteOrder - Deletes an order
 //func (c *Client) DeleteOrder(orderID string) error {
 //	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/orders/%s", c.HostURL, orderID), nil)

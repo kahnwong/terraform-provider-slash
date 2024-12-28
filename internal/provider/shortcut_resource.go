@@ -146,68 +146,49 @@ func (r *shortcutResource) Read(ctx context.Context, req resource.ReadRequest, r
 }
 
 func (r *shortcutResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	//// Retrieve values from plan
-	//var plan shortcutResourceModel
-	//diags := req.Plan.Get(ctx, &plan)
-	//resp.Diagnostics.Append(diags...)
-	//if resp.Diagnostics.HasError() {
-	//	return
-	//}
-	//
-	//// Generate API request body from plan
-	//var hashicupsItems []hashicups.OrderItem
-	//for _, item := range plan.Items {
-	//	hashicupsItems = append(hashicupsItems, hashicups.OrderItem{
-	//		Coffee: hashicups.Coffee{
-	//			ID: int(item.Coffee.ID.ValueInt64()),
-	//		},
-	//		Quantity: int(item.Quantity.ValueInt64()),
-	//	})
-	//}
-	//
-	//// Update existing order
-	//_, err := r.client.UpdateOrder(plan.ID.ValueString(), hashicupsItems)
-	//if err != nil {
-	//	resp.Diagnostics.AddError(
-	//		"Error Updating HashiCups Order",
-	//		"Could not update order, unexpected error: "+err.Error(),
-	//	)
-	//	return
-	//}
-	//
-	//// Fetch updated items from GetShortcut as UpdateOrder items are not
-	//// populated.
-	//order, err := r.client.GetShortcut(plan.ID.ValueString())
-	//if err != nil {
-	//	resp.Diagnostics.AddError(
-	//		"Error Reading HashiCups Order",
-	//		"Could not read HashiCups order ID "+plan.ID.ValueString()+": "+err.Error(),
-	//	)
-	//	return
-	//}
-	//
-	//// Update resource state with updated items and timestamp
-	//plan.Items = []orderItemModel{}
-	//for _, item := range order.Items {
-	//	plan.Items = append(plan.Items, orderItemModel{
-	//		Coffee: orderItemCoffeeModel{
-	//			ID:          types.Int64Value(int64(item.Coffee.ID)),
-	//			Name:        types.StringValue(item.Coffee.Name),
-	//			Teaser:      types.StringValue(item.Coffee.Teaser),
-	//			Description: types.StringValue(item.Coffee.Description),
-	//			Price:       types.Float64Value(item.Coffee.Price),
-	//			Image:       types.StringValue(item.Coffee.Image),
-	//		},
-	//		Quantity: types.Int64Value(int64(item.Quantity)),
-	//	})
-	//}
-	//plan.LastUpdated = types.StringValue(time.Now().Format(time.RFC850))
-	//
-	//diags = resp.State.Set(ctx, plan)
-	//resp.Diagnostics.Append(diags...)
-	//if resp.Diagnostics.HasError() {
-	//	return
-	//}
+	// Retrieve values from plan
+	var plan shortcutResourceModel
+	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Generate API request body from plan
+	shortcut := slash.Shortcut{Name: plan.Name.ValueString(), Link: plan.Link.ValueString(), Title: plan.Title.ValueString()}
+
+	// Update existing order
+	_, err := r.client.UpdateShortcut(plan.ID.ValueString(), shortcut)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Updating Slash Shortcut",
+			"Could not update order, unexpected error: "+err.Error(),
+		)
+		return
+	}
+
+	// Fetch updated items from GetShortcut as UpdateShortcut items are not
+	// populated.
+	sr, err := r.client.GetShortcut(plan.ID.ValueString())
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Reading Slash Shortcut",
+			"Could not read Slash shortcut ID "+plan.ID.ValueString()+": "+err.Error(),
+		)
+		return
+	}
+
+	// Update resource state
+	plan.ID = types.StringValue(strconv.Itoa(sr.ID))
+	plan.Name = types.StringValue(sr.Name)
+	plan.Link = types.StringValue(sr.Link)
+	plan.Title = types.StringValue(sr.Title)
+
+	diags = resp.State.Set(ctx, plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 }
 
 func (r *shortcutResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
