@@ -1,11 +1,12 @@
 terraform {
   required_providers {
-    hashicups = {
+    slash = {
       source = "hashicorp.com/kahnwong/slash"
     }
   }
 }
 
-provider "hashicups" {}
+provider "slash" {}
 
 # data "hashicups_coffees" "example" {}
+

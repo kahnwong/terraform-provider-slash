@@ -15,7 +15,6 @@ func (c *Client) validateAccessToken() (*AuthResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Authorization", "Bearer "+c.AccessToken)
 
 	body, err := c.doRequest(req)
 	if err != nil {

@@ -42,7 +42,7 @@ func NewClient(host *string, accessToken *string) (*Client, error) {
 }
 
 func (c *Client) doRequest(req *http.Request) ([]byte, error) {
-	req.Header.Set("Authorization", c.AccessToken)
+	req.Header.Set("Authorization", "Bearer "+c.AccessToken)
 
 	res, err := c.HTTPClient.Do(req)
 	if err != nil {
