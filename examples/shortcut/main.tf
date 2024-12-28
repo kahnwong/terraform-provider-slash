@@ -13,6 +13,6 @@ provider "slash" {
 
 resource "slash_shortcut" "example" {
   name  = "mb"
-  link  = "https://microbin.foo.com"
+  link  = "https://foo.bar"
   title = "Microbin"
 }
