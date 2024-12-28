@@ -10,6 +10,10 @@ import (
 	"github.com/kahnwong/terraform-provider-slash/internal/provider"
 )
 
+//go:generate terraform fmt -recursive ./examples/
+
+//go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate -provider-name hashicups
+
 var (
 	version string = "dev"
 )
