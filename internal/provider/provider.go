@@ -6,7 +6,6 @@ import (
 
 	"github.com/kahnwong/terraform-provider-slash/slash"
 
-	//"github.com/hashicorp-demoapp/hashicups-client-go"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -133,7 +132,7 @@ func (p *slashProvider) Configure(ctx context.Context, req provider.ConfigureReq
 
 	tflog.Debug(ctx, "Creating Slash client")
 
-	client, err := slash.NewClient(&host, &accessToken) // hashicups.NewClient(&host, &accessToken)
+	client, err := slash.NewClient(&host, &accessToken)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Unable to Create Slash API Client",

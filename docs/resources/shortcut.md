@@ -39,6 +39,6 @@ resource "slash_shortcut" "example" {
 Import is supported using the following syntax:
 
 ```shell
-# Order can be imported by specifying the numeric identifier.
-terraform import hashicups_order.example 123
+# Shortcut can be imported by specifying the numeric identifier.
+terraform import slash_shortcut.example 123
 ```

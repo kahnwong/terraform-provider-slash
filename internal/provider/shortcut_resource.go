@@ -3,6 +3,8 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strconv"
+
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -10,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kahnwong/terraform-provider-slash/slash"
-	"strconv"
 )
 
 var (
@@ -157,12 +158,12 @@ func (r *shortcutResource) Update(ctx context.Context, req resource.UpdateReques
 	// Generate API request body from plan
 	shortcut := slash.Shortcut{Name: plan.Name.ValueString(), Link: plan.Link.ValueString(), Title: plan.Title.ValueString()}
 
-	// Update existing order
+	// Update existing shortcut
 	_, err := r.client.UpdateShortcut(plan.ID.ValueString(), shortcut)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Updating Slash Shortcut",
-			"Could not update order, unexpected error: "+err.Error(),
+			"Could not update shortcut, unexpected error: "+err.Error(),
 		)
 		return
 	}

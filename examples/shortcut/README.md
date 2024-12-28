@@ -1,15 +1,13 @@
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| terraform | >= 1.1.0 |
+No requirements.
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| hashicups | n/a |
+| slash | n/a |
 
 ## Modules
 
@@ -19,7 +17,7 @@ No modules.
 
 | Name | Type |
 |------|------|
-| hashicups_order.edu | resource |
+| slash_shortcut.example | resource |
 
 ## Inputs
 
@@ -27,7 +25,5 @@ No inputs.
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| edu\_order | n/a |
+No outputs.
 <!-- END_TF_DOCS -->

@@ -7,7 +7,7 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| hashicups | n/a |
+| slash | n/a |
 
 ## Modules
 
@@ -17,7 +17,7 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [hashicups_order.example](https://registry.terraform.io/providers/hashicorp/hashicups/latest/docs/resources/order) | resource |
+| [slash_shortcut.example](https://registry.terraform.io/providers/hashicorp/slash/latest/docs/resources/shortcut) | resource |
 
 ## Inputs
 
