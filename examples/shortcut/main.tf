@@ -12,7 +12,7 @@ provider "slash" {
 }
 
 resource "slash_shortcut" "example" {
-  name  = "mb"
-  link  = "https://foo.bar"
-  title = "Microbin"
+  name  = "foo"
+  link  = "https://foo.example.com"
+  title = "Foo"
 }
